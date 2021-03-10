@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopClassLibrary.Models;
+using System;
 
 namespace ConsoleUI
 {
@@ -6,7 +7,12 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var shop = new Shop();
+            shop.Items.Add(new Item("Candy", 1.60M, 20));
+            shop.Items.Add(new Item("Book", 20.65M, 20));
+            shop.Items.Add(new Item("Cup", 5.40M, 10));
+
+            
         }
     }
 }
