@@ -1,4 +1,5 @@
 ﻿using ShopClassLibrary.Models;
+using ShopClassLibrary.Helpers;
 using System;
 
 namespace ConsoleUI
@@ -12,7 +13,7 @@ namespace ConsoleUI
             shop.Items.Add(new Item("Book", 20.65M, 20));
             shop.Items.Add(new Item("Cup", 5.40M, 10));
 
-            
+            Console.WriteLine(Message.CommandList);
         }
     }
 }
