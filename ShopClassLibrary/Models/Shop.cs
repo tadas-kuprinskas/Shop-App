@@ -20,12 +20,12 @@ namespace ShopClassLibrary.Models
 
             foreach (var item in Items)
             {
-                if((item.Name).ToLower() == nameNewItem)
+                if ((item.Name).ToLower() == nameNewItem)
                 {
                     item.Quantity += amountToAdd;
                     return Message.itemAdded;
                 }
-            }   
+            }
             return Message.noSuchItem;
         }
 
@@ -35,9 +35,32 @@ namespace ShopClassLibrary.Models
             {
                 if (item.Quantity > 0)
                 {
-                    Console.WriteLine($"{item.Name} {item.Price} {item.Quantity}"); 
+                    Console.WriteLine($"{item.Name} {item.Price} {item.Quantity}");
                 }
             }
+        }
+        public string BuyItem(User user, string itemToBuy, int amountToBuy)
+        {
+
+            foreach (var item in Items)
+            {
+                if (user.Balance > item.Price * item.Quantity)
+                {
+
+                    if ((item.Name).ToLower() == itemToBuy)
+                    {
+                        item.Quantity -= amountToBuy;
+                        user.Balance -= item.Price * amountToBuy;
+                        return Message.boughtItem;
+                    } 
+                }
+                else
+                {
+                        return Message.notEnoughMoney;
+                }
+            }
+
+            return Message.noSuchItem;
         }
     }
 }

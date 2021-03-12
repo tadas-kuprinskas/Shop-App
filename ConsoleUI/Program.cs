@@ -1,6 +1,5 @@
 ﻿using ShopClassLibrary.Models;
 using ShopClassLibrary.Helpers;
-using ShopClassLibrary.Services;
 using System;
 using System.Text.RegularExpressions;
 
@@ -11,15 +10,14 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             var shop = new Shop();
-            
-
-            var userBalanceService = new UserBalanceService();
-            User user = new User(userBalanceService);
+  
+            User user = new User();
 
             var startApp = true;
-            Console.WriteLine(Message.welcomeMessage);
+            Console.WriteLine($"{Message.welcomeMessage}{Message.nextCommand}");
 
-                    Creation.CreateFirstItems(shop);
+            Creation.CreateFirstItems(shop);
+
             while (startApp)
             {
                 try
@@ -27,27 +25,28 @@ namespace ConsoleUI
                     var text = Console.ReadLine();
                     string[] textArr = Regex.Split(text, " ");
 
-                    switch (textArr[0])
+                    switch (textArr[0].ToLower())
                     {
                         case "balance":
-                            Console.WriteLine($"{Message.currentBalance}{user.Balance}\n");
+                            Console.WriteLine($"{Message.currentBalance}{user.Balance}\n{Message.nextCommand}");
                             break;
                        case "add":
                             var addItem = textArr[1];
                             var addAmount = int.Parse(textArr[2]);
-                            var addMessage = shop.AddItem(addItem, addAmount);
-                            Console.WriteLine(addMessage);
+                            Console.WriteLine($"{shop.AddItem(addItem, addAmount)}{Message.nextCommand}");
                             break;
-                        case "buy":   
-                        
+                        case "buy":
+                            var itemToBuy = textArr[1];
+                            var amountToBuy = int.Parse(textArr[2]);
+                            Console.WriteLine($"{shop.BuyItem(user, itemToBuy, amountToBuy)}{Message.nextCommand}");
                             break;
                         case "list":
                             shop.GetItemList();
                             break;
-                        case "money":
+                        case "topup":
                             var amount = decimal.Parse(textArr[1]);
-                            user.AddMoney(amount);
-                            Console.WriteLine(Message.addedMoney + amount);
+                            user.AddMoney(user, amount);
+                            Console.WriteLine($"{Message.addedMoney + amount}{Message.nextCommand}");
                             break;
                         case "exit":
                             startApp = false;
@@ -56,7 +55,7 @@ namespace ConsoleUI
                             throw new InvalidOperationException();
                     }
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                     Console.WriteLine(Message.noSuchCommand); 
                 }
