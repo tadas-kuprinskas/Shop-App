@@ -2,6 +2,8 @@
 using ShopClassLibrary.Helpers;
 using System;
 using System.Text.RegularExpressions;
+using ShopClassLibrary.Interfaces;
+using ShopClassLibrary.Services;
 
 namespace ConsoleUI
 {
@@ -10,11 +12,13 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             var shop = new Shop();
-  
-            User user = new User();
+            IPrint cPrint = new ConsolePrintServices();
+            IAddMoney addMoney = new AddMoneyService();
+            IConsoleRead consoleRead = new ConsoleReadService();
+            User user = new User(addMoney);
 
             var startApp = true;
-            Console.WriteLine($"{Message.welcomeMessage}{Message.nextCommand}");
+            cPrint.Print($"{Message.welcomeMessage}{Message.nextCommand}");
 
             Creation.CreateFirstItems(shop);
 
@@ -22,31 +26,38 @@ namespace ConsoleUI
             {
                 try
                 {
-                    var text = Console.ReadLine();
+                    var text = consoleRead.GetConsoleString();
+
                     string[] textArr = Regex.Split(text, " ");
 
                     switch (textArr[0].ToLower())
                     {
                         case "balance":
-                            Console.WriteLine($"{Message.currentBalance}{user.Balance}\n{Message.nextCommand}");
+
+                            cPrint.Print($"{Message.currentBalance}{user.Balance}\n{Message.nextCommand}");
                             break;
                        case "add":
                             var addItem = textArr[1];
                             var addAmount = int.Parse(textArr[2]);
-                            Console.WriteLine($"{shop.AddItem(addItem, addAmount)}{Message.nextCommand}");
+
+                            cPrint.Print($"{shop.AddItem(addItem, addAmount)}{Message.nextCommand}");
                             break;
                         case "buy":
                             var itemToBuy = textArr[1];
                             var amountToBuy = int.Parse(textArr[2]);
-                            Console.WriteLine($"{shop.BuyItem(user, itemToBuy, amountToBuy)}{Message.nextCommand}");
+
+                            cPrint.Print($"{shop.BuyItem(user, itemToBuy, amountToBuy)}{Message.nextCommand}");
                             break;
                         case "list":
                             shop.GetItemList();
+
+                            cPrint.Print($"{Message.nextCommand}");
                             break;
                         case "topup":
                             var amount = decimal.Parse(textArr[1]);
                             user.AddMoney(user, amount);
-                            Console.WriteLine($"{Message.addedMoney + amount}{Message.nextCommand}");
+
+                            cPrint.Print($"{Message.addedMoney + amount}{Message.nextCommand}");
                             break;
                         case "exit":
                             startApp = false;
@@ -57,12 +68,13 @@ namespace ConsoleUI
                 }
                 catch (InvalidOperationException)
                 {
-                    Console.WriteLine(Message.noSuchCommand); 
+                    cPrint.Print(Message.noSuchCommand); 
                 }
                 catch (Exception e)
                 {
                     startApp = false;
-                    Console.WriteLine(e.Message);
+
+                    cPrint.Print(e.Message);
                 }
             }
         }

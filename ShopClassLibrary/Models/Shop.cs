@@ -1,4 +1,6 @@
 ﻿using ShopClassLibrary.Helpers;
+using ShopClassLibrary.Interfaces;
+using ShopClassLibrary.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,13 @@ namespace ShopClassLibrary.Models
     public class Shop
     {
         public List<Item> Items { get; set; }
+
+        private IAddItem _addItem = new AddItemService();
+
+        private IGetItemList _getItemList = new GetItemListService();
+
+        private IBuyItem _buyItem = new BuyItemService();
+
         public Shop()
         {
             Items = new List<Item>();
@@ -17,50 +26,17 @@ namespace ShopClassLibrary.Models
 
         public string AddItem(string nameNewItem, int amountToAdd)
         {
-
-            foreach (var item in Items)
-            {
-                if ((item.Name).ToLower() == nameNewItem)
-                {
-                    item.Quantity += amountToAdd;
-                    return Message.itemAdded;
-                }
-            }
-            return Message.noSuchItem;
+            return _addItem.AddItem(nameNewItem, amountToAdd, Items);
         }
 
         public void GetItemList()
         {
-            foreach (var item in Items)
-            {
-                if (item.Quantity > 0)
-                {
-                    Console.WriteLine($"{item.Name} {item.Price} {item.Quantity}");
-                }
-            }
+            _getItemList.GetItemList(Items);
         }
         public string BuyItem(User user, string itemToBuy, int amountToBuy)
         {
 
-            foreach (var item in Items)
-            {
-                if (user.Balance > item.Price * item.Quantity)
-                {
-
-                    if ((item.Name).ToLower() == itemToBuy)
-                    {
-                        item.Quantity -= amountToBuy;
-                        user.Balance -= item.Price * amountToBuy;
-                        return Message.boughtItem;
-                    } 
-                }
-                else
-                {
-                        return Message.notEnoughMoney;
-                }
-            }
-
-            return Message.noSuchItem;
+            return _buyItem.BuyItem(user, itemToBuy, amountToBuy, Items);
         }
     }
 }
