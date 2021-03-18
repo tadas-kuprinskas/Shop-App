@@ -14,7 +14,7 @@ namespace ConsoleUI
             var shop = new Shop();
             IPrint cPrint = new ConsolePrintServices();
             IAddMoney addMoney = new AddMoneyService();
-            IConsoleRead consoleRead = new ConsoleReadService();
+            IReader Read = new ConsoleReadService();
             User user = new User(addMoney);
 
             var startApp = true;
@@ -26,7 +26,7 @@ namespace ConsoleUI
             {
                 try
                 {
-                    var text = consoleRead.GetConsoleString();
+                    var text = Read.GetValue();
 
                     string[] textArr = Regex.Split(text, " ");
 

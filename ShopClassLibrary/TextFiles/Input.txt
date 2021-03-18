@@ -1,0 +1,11 @@
+﻿topup 100
+add cup 4
+buy cup 2
+list
+balance
+add book 2
+buy book 2
+buy book 1
+list
+balance
+exit

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ShopClassLibrary.Interfaces
 {
-    public interface IConsoleRead
+    public interface IReader
     {
-        string GetConsoleString();
+        string GetValue();
     }
 }

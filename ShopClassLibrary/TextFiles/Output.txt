@@ -1,0 +1,17 @@
+﻿List					 : Displays available items
+Buy "Item Name" "Amount"		 : Buys wanted amount of the item
+Add "Item Name" "Amount"		 : Increases amount of items
+Balance					 : Shows your current balance
+Topup "Amount"				 : Adds money to your balance
+Exit					 : Exits the program.
+
+Type your next command
+
+System.IO.FileNotFoundException: Could not find file 'C:\Users\tadas\source\repos\ConsoleShopApplication\ShopClassLibrary\TextFiles\System.IO.StreamReader'.
+File name: 'C:\Users\tadas\source\repos\ConsoleShopApplication\ShopClassLibrary\TextFiles\System.IO.StreamReader'
+   at System.IO.FileStream.ValidateFileHandle(SafeFileHandle fileHandle)
+   at System.IO.FileStream.CreateFileOpenHandle(FileMode mode, FileShare share, FileOptions options)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options)
+   at System.IO.StreamReader.ValidateArgsAndOpenPath(String path, Encoding encoding, Int32 bufferSize)
+   at System.IO.StreamReader..ctor(String path, Boolean detectEncodingFromByteOrderMarks)
+   at ShopClassLibrary.Services.FIleReaderService.GetValue() in C:\Users\tadas\source\repos\ConsoleShopApplication\ShopClassLibrary\Services\FIleReaderService.cs:line 24
